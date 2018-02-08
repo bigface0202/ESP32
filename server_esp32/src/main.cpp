@@ -51,14 +51,14 @@ void loop() {
   pCharacteristic->setValue("0");
   if (digitalRead(InputPin1) == LOW){
     //Serial.printf("*** NOTIFY: %d ***\n", value);
-    pCharacteristic->setValue("Hello world");
+    pCharacteristic->setValue("1");
     //pCharacteristic->notify();
-    delay(1000);
+    delay(30);
   }else if (digitalRead(InputPin2) == LOW){
     //Serial.printf("*** NOTIFY: %d ***\n", value);
-    pCharacteristic->setValue("Hello japan");
+    pCharacteristic->setValue("2");
     //pCharacteristic->notify();
-    delay(1000);
+    delay(30);
 
   }
 

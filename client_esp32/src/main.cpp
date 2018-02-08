@@ -20,6 +20,7 @@ const int OutputPin1 = 4;
 const int OutputPin2 = 5;
 const int OutputPin3 = 2;
 
+
 static void notifyCallback(
   BLERemoteCharacteristic* pBLERemoteCharacteristic,
   uint8_t* pData,
@@ -128,31 +129,32 @@ void loop() {
 
     }
     doConnect = false;
-    digitalWrite(OutputPin3,HIGH);
+    digitalWrite(OutputPin3,LOW);
   }
 
   // If we are connected to a peer BLE Server, update the characteristic each time we are reached
   // with the current time since boot.
   if (connected) {
+    std::string value = pRemoteCharacteristic->readValue();
     digitalWrite(OutputPin1,LOW);
     digitalWrite(OutputPin2,LOW);
     digitalWrite(OutputPin3,HIGH);
 
     //String newValue = "Time since boot: " + String(millis()/1000);
     //Serial.println("Setting new characteristic value to \"" + newValue + "\"");
-    std::string value = pRemoteCharacteristic->readValue();
+
     //Serial.println(value.c_str());
-    if (value.c_str() == "Hello world"){
+    if (value.c_str() == std::string("1")){
       Serial.println(value.c_str());
       digitalWrite(OutputPin1,HIGH);
-      delay(1000);
-    }else if (value.c_str() == "Hello japan"){
+      //delay(1000);
+    }else if (value.c_str() == std::string("2")){
       digitalWrite(OutputPin2,HIGH);
       Serial.println(value.c_str());
-      delay(1000);
-    }else if (value.c_str() == "0"){
+      //delay(1000);
+    }else if (value.c_str() == std::string("0")){
       Serial.println(value.c_str());
-      delay(1000);
+      //delay(1000);
     }
     // Set the characteristic's value to be the array of bytes that is actually a string.
     //pRemoteCharacteristic->writeValue(newValue.c_str(), newValue.length());
