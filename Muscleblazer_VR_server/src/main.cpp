@@ -1,13 +1,9 @@
 #include <Arduino.h>
-/*BLE---------------------------------------------------*/
-#include <BLEDevice.h>
-#include <BLEUtils.h>
-#include <BLEServer.h>
+#include <WiFi.h>
+const char *ssid = "ESP32-WiFi"; //SSID of server
+const char *pass = "esp32wifi";  //PW of server
+static WiFiClient client;        //Declear client
 
-#define SERVICE_UUID "91bad492-b950-4226-aa2b-4ede9fa42f59"
-#define CHARACTERISTIC_UUID "0d563a58-196a-48ce-ace2-dfec78acc814"
-
-BLECharacteristic *pCharacteristic;
 uint8_t value = 0;
 /*------------------------------------------------------*/
 //For searial connection with Unity
@@ -49,7 +45,7 @@ void switchFunction()
         if (PGM_switch_1_now == HIGH)
         {
             Serial.println("PGM1 HIGH");
-            pCharacteristic->setValue("1");
+            client.write('1');
             delay(1000);
         }
         PGM_switch_1_past = PGM_switch_1_now;
@@ -60,7 +56,7 @@ void switchFunction()
         if (PGM_switch_2_now == HIGH)
         {
             Serial.println("PGM2 HIGH");
-            pCharacteristic->setValue("1");
+            client.write('2');
             delay(1000);
         }
         PGM_switch_2_past = PGM_switch_2_now;
@@ -71,7 +67,7 @@ void switchFunction()
         if (PGM_switch_3_now == HIGH)
         {
             Serial.println("PGM3 HIGH");
-            pCharacteristic->setValue("1");
+            client.write('3');
             delay(1000);
         }
         PGM_switch_3_past = PGM_switch_3_now;
@@ -82,7 +78,7 @@ void switchFunction()
         if (PGM_switch_4_now == HIGH)
         {
             Serial.println("PGM4 HIGH");
-            pCharacteristic->setValue("1");
+            client.write('4');
             delay(1000);
         }
         PGM_switch_4_past = PGM_switch_4_now;
@@ -93,7 +89,7 @@ void switchFunction()
         if (PGM_switch_5_now == HIGH)
         {
             Serial.println("PGM5 HIGH");
-            pCharacteristic->setValue("1");
+            client.write('5');
             delay(1000);
         }
         PGM_switch_5_past = PGM_switch_5_now;
@@ -103,26 +99,17 @@ void switchFunction()
 void setup()
 {
     Serial.begin(115200);
-    /*BLE-------------------------------------------------*/
-    Serial.println("Starting BLE work!");
-
-    BLEDevice::init("ESP32");
-    BLEServer *pServer = BLEDevice::createServer();
-    BLEService *pService = pServer->createService(SERVICE_UUID);
-    pCharacteristic = pService->createCharacteristic(
-        CHARACTERISTIC_UUID,
-        BLECharacteristic::PROPERTY_READ |
-            BLECharacteristic::PROPERTY_WRITE |
-            BLECharacteristic::PROPERTY_NOTIFY |
-            BLECharacteristic::PROPERTY_INDICATE);
-
-    pCharacteristic->setValue("Hello World says Neil");
-    pService->start();
-    pServer->getAdvertising()->addServiceUUID(BLEUUID(SERVICE_UUID));
-    BLEAdvertising *pAdvertising = pServer->getAdvertising();
-    pAdvertising->start();
-    Serial.println("Characteristic defined! Now you can read it in your phone!");
-    /*---------------------------------------------------*/
+    WiFi.begin(ssid, pass); //Connect to server
+    Serial.printf("\n");
+    while (WiFi.status() != WL_CONNECTED)
+    {
+        Serial.print(".");
+        delay(1000);
+    }
+    Serial.printf("\n");
+    Serial.println("WiFi Connected");
+    IPAddress ip(192, 168, 0, 9); //IP address of server
+    client.connect(ip, 80);       //Connect to IP address and port number
 
     pinMode(Kill_switch, INPUT);
     pinMode(PGM_switch_1, INPUT);
@@ -138,40 +125,42 @@ void loop()
     Kill_switch_now = digitalRead(Kill_switch);
 
     switchFunction();
-
-    if (Unity_signal == '0')
+    if (client.connected() == true)
     {
-        pCharacteristic->setValue("0");
-    }
-    else if (Unity_signal == '1')
-    {
-        pCharacteristic->setValue("1");
-    }
-    else if (Unity_signal == '2')
-    {
-        pCharacteristic->setValue("2");
-    }
-    else if (Unity_signal == '3')
-    {
-        pCharacteristic->setValue("3");
-    }
-    else if (Unity_signal == '4')
-    {
-        pCharacteristic->setValue("4");
-    }
-    else if (Unity_signal == '5')
-    {
-        pCharacteristic->setValue("5");
-    }
-    if (Kill_switch_past != Kill_switch_now)
-    {
-        if (Kill_switch_now == HIGH)
+        if (Unity_signal == '0')
         {
-            Serial.println("HIGH");
-            pCharacteristic->setValue("0");
-            delay(1000);
-            exit(0);
+            client.write('0');
         }
-        Kill_switch_past = Kill_switch_now;
+        else if (Unity_signal == '1')
+        {
+            client.write('1');
+        }
+        else if (Unity_signal == '2')
+        {
+            client.write('2');
+        }
+        else if (Unity_signal == '3')
+        {
+            client.write('3');
+        }
+        else if (Unity_signal == '4')
+        {
+            client.write('4');
+        }
+        else if (Unity_signal == '5')
+        {
+            client.write('5');
+        }
+        if (Kill_switch_past != Kill_switch_now)
+        {
+            if (Kill_switch_now == HIGH)
+            {
+                Serial.println("HIGH");
+                client.write('0');
+                delay(1000);
+                exit(0);
+            }
+            Kill_switch_past = Kill_switch_now;
+        }
     }
 }
