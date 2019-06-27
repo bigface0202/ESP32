@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
-const char *ssid = "ESP32-WiFi"; //SSID of server
-const char *pass = "esp32wifi";  //PW of server
+const char *ssid = "ESP32-WiFi2"; //SSID of server
+const char *pass = "esp32wifi2";  //PW of server
 static WiFiClient client;        //Declear client
 
 uint8_t value = 0;

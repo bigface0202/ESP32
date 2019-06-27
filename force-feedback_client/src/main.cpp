@@ -10,8 +10,8 @@ int PGM_Valve_Pin5 = 27;
 
 uint8_t value;
 
-const char *ssid = "ESP32-WiFi";          //SSID
-const char *pass = "esp32wifi";           //PW
+const char *ssid = "ESP32-WiFi2";          //SSID
+const char *pass = "esp32wifi2";           //PW
 const IPAddress ip(192, 168, 0, 9);       //IP address of server
 const IPAddress subnet(255, 255, 255, 0); //Subnetmask
 WiFiServer server(80);
@@ -74,7 +74,7 @@ void loop()
             else if (value == '2')
             {
                 Serial.println(value);
-                digitalWrite(PGM_Valve_Pin1, HIGH);
+                digitalWrite(PGM_Valve_Pin1, LOW);
                 digitalWrite(PGM_Valve_Pin2, HIGH);
                 digitalWrite(PGM_Valve_Pin3, LOW);
                 digitalWrite(PGM_Valve_Pin4, LOW);
@@ -85,7 +85,7 @@ void loop()
                 Serial.println(value);
                 digitalWrite(PGM_Valve_Pin1, HIGH);
                 digitalWrite(PGM_Valve_Pin2, HIGH);
-                digitalWrite(PGM_Valve_Pin3, HIGH);
+                digitalWrite(PGM_Valve_Pin3, LOW);
                 digitalWrite(PGM_Valve_Pin4, LOW);
                 digitalWrite(PGM_Valve_Pin5, LOW);
             }

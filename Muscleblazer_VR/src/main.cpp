@@ -10,8 +10,8 @@ int PGM_Valve_Pin5 = 27;
 
 uint8_t value;
 
-const char *ssid = "ESP32-WiFi";          //SSID
-const char *pass = "esp32wifi";           //PW
+const char *ssid = "ESP32-WiFi2";          //SSID
+const char *pass = "esp32wifi2";           //PW
 const IPAddress ip(192, 168, 0, 9);       //IP address of server
 const IPAddress subnet(255, 255, 255, 0); //Subnetmask
 WiFiServer server(80);
