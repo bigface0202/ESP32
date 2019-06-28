@@ -29,8 +29,6 @@ void loop()
 
     if (client.connected() == true)
     {
-        if(int(serialSignal) < 5){
         client.write(serialSignal);
-        }
     }
 }
