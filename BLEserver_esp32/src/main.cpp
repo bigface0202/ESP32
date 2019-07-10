@@ -49,12 +49,12 @@ void loop() {
   // put your main code here, to run repeatedly:
   //uint8_t TEST1 = 4, TEST2 = 5;
   pCharacteristic->setValue("0");
-  if (digitalRead(InputPin1) == LOW){
+  if (digitalRead(InputPin1) == HIGH){
     //Serial.printf("*** NOTIFY: %d ***\n", value);
     pCharacteristic->setValue("1");
     //pCharacteristic->notify();
     delay(30);
-  }else if (digitalRead(InputPin2) == LOW){
+  }else if (digitalRead(InputPin2) == HIGH){
     //Serial.printf("*** NOTIFY: %d ***\n", value);
     pCharacteristic->setValue("2");
     //pCharacteristic->notify();
