@@ -17,6 +17,19 @@ const IPAddress ip(192, 168, 0, 10);       //IP address of server
 const IPAddress subnet(255, 255, 255, 0); //Subnetmask
 WiFiServer server(80);
 
+void releaseAllPGM(){
+  digitalWrite(PGM_12, LOW);
+  digitalWrite(PGM_13, LOW);
+  digitalWrite(PGM_14, LOW);
+  digitalWrite(PGM_15, LOW);
+  digitalWrite(PGM_21, LOW);
+  digitalWrite(PGM_25, LOW);
+  digitalWrite(PGM_26, LOW);
+  digitalWrite(PGM_27, LOW);
+  digitalWrite(PGM_32, LOW);
+  digitalWrite(PGM_33, LOW);
+}
+
 void setup()
 {
     Serial.begin(115200);
@@ -79,7 +92,10 @@ void loop()
             digitalWrite(PGM_32, HIGH);
           }else if(value == 'j'){
             digitalWrite(PGM_33, HIGH);
+          }else if(value == 'k'){
+            releaseAllPGM();
           }
         }
     }
 }
+

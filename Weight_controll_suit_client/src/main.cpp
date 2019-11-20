@@ -55,5 +55,8 @@ void loop()
     if (serialSignal == '9') {
       client.println("j");
     }
+    if (serialSignal == 'a') {
+      client.println("k");
+    }
   }
 }
